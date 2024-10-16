@@ -1,0 +1,22 @@
+<h3>Academic Writing Suggestions</h3>
+<textarea id="academicText" placeholder="Paste your text here..." rows="10"></textarea>
+<br />
+<button id="getSuggestions">Get Suggestions</button>
+<div id="suggestions"></div>
+
+<script>
+    async function getSuggestions() {
+        const text = document.getElementById('academicText').value;
+        const response = await fetch('http://localhost:3001/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text }),
+        });
+        const data = await response.json();
+        document.getElementById('suggestions').innerHTML = data.suggestions;
+    }
+
+    document.getElementById('getSuggestions').addEventListener('click', getSuggestions);
+</script>
