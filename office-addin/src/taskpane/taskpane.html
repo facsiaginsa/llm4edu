@@ -4,19 +4,4 @@
 <button id="getSuggestions">Get Suggestions</button>
 <div id="suggestions"></div>
 
-<script>
-    async function getSuggestions() {
-        const text = document.getElementById('academicText').value;
-        const response = await fetch('http://localhost:3001/analyze', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text }),
-        });
-        const data = await response.json();
-        document.getElementById('suggestions').innerHTML = data.suggestions;
-    }
-
-    document.getElementById('getSuggestions').addEventListener('click', getSuggestions);
-</script>
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
