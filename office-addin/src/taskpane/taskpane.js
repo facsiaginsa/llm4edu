@@ -5,7 +5,7 @@
 
 /* global document, Office, Word */
 let typingTimer;
-const typingDelay = process.env.TYPING_DELAY; // in miliseconds
+const typingDelay = process.env.TYPING_DELAY || 3000; // in miliseconds
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
