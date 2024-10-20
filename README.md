@@ -17,9 +17,20 @@ node index.js
 
 ## How to start the office-addin
 
+Install all dependencies
 ```bash
 cd llm4edu
 npm install
+```
+
+Create  `.env` file from `.env.example`
+```bash
+cp .env.example .env
+```
+And then fill the env according to your situation
+
+Run the addin
+```bash
 npm run dev-server 
 # Exit after webpack compiled successfully
 npm start

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-
+const Dotenv = require('dotenv-webpack');
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -54,10 +54,15 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new Dotenv(),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
         chunks: ["polyfill", "taskpane"],
+      }),
+      new HtmlWebpackPlugin({
+        filename: "hello.html",
+        template: "./src/extras/hello.html",
       }),
       new CopyWebpackPlugin({
         patterns: [

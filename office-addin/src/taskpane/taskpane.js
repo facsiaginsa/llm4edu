@@ -4,19 +4,28 @@
  */
 
 /* global document, Office, Word */
+let typingTimer;
+const typingDelay = process.env.TYPING_DELAY; // in miliseconds
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
-    // document.getElementById("sideload-msg").style.display = "none";
-    // document.getElementById("app-body").style.display = "flex";
-    // document.getElementById("run").onclick = run;
+    // Get Data from text area
     document.getElementById('getSuggestions').onclick = getSuggestions;
+
+    // Trigger pop up
+    document.getElementById('displayPopUp').onclick = popUp;
+
+    // Scan document everytime user stop typing for 3 second <- configured by typingDelay parameter
+    Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, () => {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(scanDocument, typingDelay);
+    });
   }
 });
 
 export async function getSuggestions() {
   const text = document.getElementById('academicText').value;
-  const response = await fetch('http://localhost:3001/analyze', {
+  const response = await fetch(process.env.BACKEND_URL + '/analyze', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -27,18 +36,25 @@ export async function getSuggestions() {
   document.getElementById('suggestions').innerHTML = data.suggestions;
 }
 
-export async function run() {
+export async function scanDocument() {
   return Word.run(async (context) => {
-    /**
-     * Insert your Word code here
-     */
+    // Get the entire document's content
+    const body = context.document.body.paragraphs;
+    body.load('text');
 
-    // insert a paragraph at the end of the document.
-    const paragraph = context.document.body.insertParagraph("Hello World", Word.InsertLocation.end);
+    await context.sync()
+    // const text = body.text;
+    body.items.forEach((item) => {
+      console.log(item.text)
+    })
 
-    // change the paragraph color to blue.
-    paragraph.font.color = "blue";
-
-    await context.sync();
   });
+}
+
+export async function popUp() {
+  return Word.run(async (context) => {
+    Office.context.ui.displayDialogAsync( process.env.ADDIN_URL + '/hello.html', { width: 30, height: 30 }, function (asyncResult) {
+      const dialog = asyncResult.value;
+    });
+  })
 }
