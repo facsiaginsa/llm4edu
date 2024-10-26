@@ -1,18 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { analyzeText } = require('./textAnalyzer'); // Custom text analyzer logic
+const { app } = require("./loaders/routes")
+const { PORT, IP_BIND } = require('./configs');
 
-const cors = require('cors');
-
-const app = express();
-app.use(cors());  // Enable CORS for all routes
-app.use(bodyParser.json());
-app.post('/analyze', (req, res) => {
-    const { text } = req.body;
-    const suggestions = analyzeText(text); // Analyze the text and return suggestions
-    res.json({ suggestions });
-});
-
-app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+app.listen({
+  port: PORT,
+  host: IP_BIND
+}, () => {
+  console.log("Backend server is running on port", PORT);
 });
