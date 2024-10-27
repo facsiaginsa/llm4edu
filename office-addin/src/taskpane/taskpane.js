@@ -4,57 +4,111 @@
  */
 
 /* global document, Office, Word */
-let typingTimer;
-const typingDelay = process.env.TYPING_DELAY || 3000; // in miliseconds
 
+/**
+ * Office Event Listener
+ */
+
+let popupTimeout;
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
-    // Get Data from text area
-    document.getElementById('getSuggestions').onclick = getSuggestions;
-
-    // Trigger pop up
-    document.getElementById('displayPopUp').onclick = popUp;
-
-    // Scan document everytime user stop typing for 3 second <- configured by typingDelay parameter
     Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, () => {
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(scanDocument, typingDelay);
-    });
+      clearTimeout(popupTimeout);
+      popupTimeout = setTimeout(rephraseConfirmation, 1000);  // 1 second delay
+    }); 
   }
 });
 
-export async function getSuggestions() {
-  const text = document.getElementById('academicText').value;
-  const response = await fetch(process.env.BACKEND_URL + '/analyze', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text }),
+/**
+ * End of Office Event Listener
+ */
+
+/**
+ * Features Tab Menu
+ */
+
+function showTab(tab) {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.classList.remove('active');
   });
-  const data = await response.json();
-  document.getElementById('suggestions').innerHTML = data.suggestions;
+  document.getElementById(tab).classList.add('active');
 }
 
-export async function scanDocument() {
+document.getElementById('brainstorm-button').onclick = () => showTab("brainstorm")
+document.getElementById('rephrase-button').onclick = () => showTab("rephrase")
+document.getElementById('review-button').onclick = () => showTab("review")
+document.getElementById('summarize-button').onclick = () => showTab("summarize")
+
+/**
+ * End of Features Tab Menu
+ */
+
+/**
+ * Rephrase Feature
+ */
+
+export async function rephraseConfirmation() {
   return Word.run(async (context) => {
-    // Get the entire document's content
-    const body = context.document.body.paragraphs;
-    body.load('text');
+    const range = context.document.getSelection();
+    range.load("text");
+    await context.sync();
 
-    await context.sync()
-    // const text = body.text;
-    body.items.forEach((item) => {
-      console.log(item.text)
-    })
+    if (range.text) {
+      showTab("rephrase")
+      const rephraseContainer = document.getElementById('rephrase-container');
+      rephraseContainer.innerHTML = `
+        <div>
+          Rephrase text?
+          <button id="rephrase-confirmation">Yes</button>
+        </div>
+      `;
 
+      document.getElementById('rephrase-confirmation').onclick = () => sendRephraseRequest(range.text)
+    }
   });
 }
 
-export async function popUp() {
-  return Word.run(async (context) => {
-    Office.context.ui.displayDialogAsync( process.env.ADDIN_URL + '/hello.html', { width: 30, height: 30 }, function (asyncResult) {
-      const dialog = asyncResult.value;
-    });
-  })
+export async function sendRephraseRequest(text) {
+  console.log("send rephrase request", text)
 }
+
+/**
+ * End of Rephrase Feature
+ */
+
+// export async function getSuggestions() {
+//   const text = document.getElementById('academicText').value;
+//   const response = await fetch(process.env.BACKEND_URL + '/analyze', {
+//       method: 'POST',
+//       headers: {
+//           'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ text }),
+//   });
+//   const data = await response.json();
+//   document.getElementById('suggestions').innerHTML = data.suggestions;
+// }
+
+// export async function scanDocument() {
+//   return Word.run(async (context) => {
+//     // Get the entire document's content
+//     const body = context.document.body.paragraphs;
+//     body.load('text');
+
+//     await context.sync()
+//     // const text = body.text;
+//     body.items.forEach((item) => {
+//       console.log(item.text)
+//     })
+
+//   });
+// }
+
+// export async function popUp() {
+//   return Word.run(async (context) => {
+//     Office.context.ui.displayDialogAsync( process.env.ADDIN_URL + '/hello.html', { width: 30, height: 30 }, function (asyncResult) {
+//       const dialog = asyncResult.value;
+//     });
+//   })
+// }
