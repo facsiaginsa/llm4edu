@@ -22,7 +22,9 @@ module.exports = function (app, opts, done) {
         if ( conversation.length < 1 ) return res.status(400).send({
             message: "conversation must be an array of object"
         })
+
         let [ err, result ] = await createConversation(conversation)
+        
         if (err) return res.status(500).send({
             message: "There is an error"
         })

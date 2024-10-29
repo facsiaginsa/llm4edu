@@ -1,26 +1,28 @@
-const { ConverseStreamCommand, model } = require("../../loaders/bedrock")
 const { sendConversation } = require("./model")
 
 let createConversation = async (conversation) => {
     try {
+        // let command = new ConverseStreamCommand({
+        //     modelId: model,
+        //     messages: conversation,
+        //     inferenceConfig: {
+        //         maxTokens: 512, 
+        //         temperature: 0.4, 
+        //         topP: 0.85,
+        //         topK: 50
+        //     }
+        // })
 
-        let command = new ConverseStreamCommand({
-            modelId: model,
-            messages: conversation,
-            inferenceConfig: {
-                maxTokens: 512, 
-                temperature: 0.4, 
-                topP: 0.85,
-                topK: 50
-            }
-        })
-    
-        let result = await sendConversation(command)
+        let formattedMessage = [
+            ["system", "You are a helpful assistant that rephrase sentence to be more academic tone"],
+            ...conversation
+        ]
 
-        for await (const item of result.stream) {
+        let results = await sendConversation(formattedMessage)
+        for await (const item of results) {
 
-            if (item.contentBlockDelta) {
-                process.stdout.write(item.contentBlockDelta.delta?.text);
+            if (item.content) {
+                process.stdout.write(item.content);
             }
         }   
 
