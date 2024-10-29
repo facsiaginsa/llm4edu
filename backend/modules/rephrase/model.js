@@ -1,4 +1,3 @@
-let { client } =  require("../../loaders/bedrock")
 const { converse } = require("../../loaders/langchain")
 
 let sendConversation = async (conversation) => {
