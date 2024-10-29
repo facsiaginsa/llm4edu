@@ -9,14 +9,11 @@ module.exports = function (app, opts, done) {
         let { conversation } = req.body
 
         /**
-         * {
-         *   "conversation": [{
-         *       "role": "user",
-         *       "content": [{
-         *           "text": "Describe the purpose of a 'hello world' program in one line."
-         *       }]
-         *   }]
-         *  }
+         *   {
+         *      "conversation": [
+         *          ["human", "Apple has many benefit, such as alot of vitamin, and make you healty. They say eat 1 apple a day keeps doctor away"]
+         *      ]
+         *   }
          */
 
         if ( conversation.length < 1 ) return res.status(400).send({
