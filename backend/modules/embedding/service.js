@@ -1,31 +1,17 @@
-const { requestEmbedding, insertDocumentVector } = require("./model")
+const { sendEmbedding } = require("./model")
 
-let createPaperVector = async (documents) => {
+let requestEmbedding = async (texts) => {
     try {
 
-        let texts = []
-        // document need to be formatted 
-        let newDocuments = []
-        for await ( document of documents ) {
-            let content = `title: ${document.title}\nabstract: ${document.abstract}\nkeyword: ${document.keyword}`
-            texts.push(content)
-            document.content = content
-            newDocuments.push({
-                metadata: document
-            })
-        }
+        let vectors = await sendEmbedding(texts)
 
-        let vectors = await requestEmbedding(texts)
-
-        let result = await insertDocumentVector(vectors, newDocuments)
-
-        return [ null, "Insert " + result.length + " Document(s) wirh Vector success" ]
+        return [ null, vectors ]
     } catch (error) {
         console.log(error)
-        return [{ code: 500, message: "There is an error in the server.."}, null]
+        return [ { code: 500, message: "There is an error in the server.."}, null ]
     }
 }
 
 module.exports = {
-    createPaperVector
+    requestEmbedding
 }
