@@ -9,10 +9,11 @@ let insertDocumentVector = async (vectors, documents) => {
     return await index.addVectors(vectors, documents)
 }
 
+/**
+ * Create other models here
+ */
+
 module.exports = {
     insertDocumentVector
 }
 
-/**
- * Create other services here
- */
