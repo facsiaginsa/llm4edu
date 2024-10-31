@@ -4,6 +4,7 @@ let createPaperVector = async (documents) => {
     try {
 
         let texts = []
+        // document need to be formatted 
         let newDocuments = []
         for await ( document of documents ) {
             let content = `title: ${document.title}\nabstract: ${document.abstract}\nkeyword: ${document.keyword}`
