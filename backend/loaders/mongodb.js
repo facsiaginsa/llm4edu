@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 const { MONGO_CONN_STRING } = require('../configs');
 
-mongoose.connect(MONGO_CONN_STRING);
+const mongoClient = new MongoClient(MONGO_CONN_STRING);
 
 module.exports = {
-    mongoose
+    mongoClient
 }

@@ -12,11 +12,13 @@
   "dependencies": {
     "@fastify/cors": "^10.0.1",
     "@langchain/aws": "^0.1.1",
+    "@langchain/core": "^0.3.16",
+    "@langchain/mongodb": "^0.1.0",
     "axios": "^1.7.7",
     "compromise": "^14.14.2",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",
-    "mongoose": "^8.7.3",
+    "mongodb": "^6.10.0",
     "openai": "^4.67.3"
   }
 }

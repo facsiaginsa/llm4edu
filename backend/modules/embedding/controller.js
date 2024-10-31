@@ -1,10 +1,10 @@
-const { createVector } = require("./service")
+const { createPaperVector } = require("./service")
 
 module.exports = function (app, opts, done) {
     app.post('/', async (req, res) => {
-        let { title, abstract } = req.body
+        let { documents } = req.body
 
-            let [ err, result ] = await createVector([title, abstract])
+        let [ err, result ] = await createPaperVector(documents)
 
         if (err) return res.status(err.code).send({
             message: err.message
