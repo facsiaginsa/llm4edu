@@ -1,21 +1,16 @@
 const { sendConversation } = require("./model")
 
-let createConversation = async (conversation) => {
+let createConversation = async (text) => {
     try {
+
         let formattedMessage = [
             ["system", "You are a helpful assistant that rephrase sentence to be more academic tone"],
-            ...conversation
+            ["human", text]
         ]
 
         let results = await sendConversation(formattedMessage)
-        for await (const item of results) {
-
-            if (item.content) {
-                process.stdout.write(item.content);
-            }
-        }   
-
-        return [ null, "ok"]
+        
+        return [ null, results]
     } catch (error) {
         console.log("error", error);
     }

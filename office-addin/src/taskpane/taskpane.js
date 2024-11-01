@@ -70,7 +70,21 @@ export async function rephraseConfirmation() {
 }
 
 export async function sendRephraseRequest(text) {
-  console.log("send rephrase request", text)
+
+  let response = new EventSource(process.env.BACKEND_URL + '/rephrase?text=' + text)
+
+  const rephraseContainer = document.getElementById('rephrase-container');
+
+  rephraseContainer.innerHTML = `<div id="rephrase-response"></div>`;
+
+  response.onmessage = function(event) {
+    document.getElementById('rephrase-response').textContent += event.data;
+  };
+
+  response.onerror = function(event) {
+    console.error('EventSource failed:', event);
+    response.close();
+};
 }
 
 /**

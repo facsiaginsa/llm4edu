@@ -2,33 +2,30 @@ const { createConversation } = require("./service")
 
 module.exports = function (app, opts, done) {
     app.get("/", async (req, res) => {
+        let { text } = req.query
 
-    })
+        let [ err, result ] = await createConversation(text)
 
-    app.post("/", async (req, res) => {
-        let { conversation } = req.body
+        res.raw.setHeader('Access-Control-Allow-Origin', '*');
+        res.raw.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.raw.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        res.raw.setHeader('Content-Type', 'text/event-stream');
+        res.raw.setHeader('Cache-Control', 'no-cache');
+        res.raw.setHeader('Connection', 'keep-alive');
 
-        /**
-         *   {
-         *      "conversation": [
-         *          ["human", "Apple has many benefit, such as alot of vitamin, and make you healty. They say eat 1 apple a day keeps doctor away"]
-         *      ]
-         *   }
-         */
+        if (err) {
+            res.raw.write(`data: ${err.message}\n\n`)
+            return res.raw.end()
+        }
 
-        if ( conversation.length < 1 ) return res.status(400).send({
-            message: "conversation must be an array of object"
-        })
-
-        let [ err, result ] = await createConversation(conversation)
-        
-        if (err) return res.status(500).send({
-            message: "There is an error"
-        })
-
-        return res.status(200).send({
-            message: result
-        })
+        for await (const item of result) {
+            if (!item.response_metadata?.messageStop?.stopReason) {
+                process.stdout.write(item.content);
+                res.raw.write(`data: ${item.content}\n\n`)
+            } else {
+                return res.raw.end()
+            }
+        }   
     })
 
     done()
