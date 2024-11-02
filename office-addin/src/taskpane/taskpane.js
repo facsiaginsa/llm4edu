@@ -106,17 +106,16 @@ export async function submitBrainstorm() {
     });
     console.log("API Response:", response);  // Log entire response
 
-    console.log("API suggestions:", response.data.brainstormIdea);
-    displayBrainstormSuggestions(response.data.brainstormIdea);  // Call the display function
+    console.log("API suggestions:", response.data);
+    displayBrainstormSuggestions(response.data);  // Call the display function
   } catch (error) {
     console.error("Error fetching brainstorm suggestions:", error);
   }
 }
 
-function displayBrainstormSuggestions(data) {
+function displayBrainstormSuggestions(brainstormIdea) {
   try {
-      console.log("brainstorm data:", data);
-      const brainstormIdea = JSON.parse(data);
+      console.log("brainstorm idea:", brainstormIdea);
       const suggestions = Object.values(brainstormIdea);
       
       const suggestionElements = suggestions.map(suggestion => {
@@ -133,6 +132,7 @@ function displayBrainstormSuggestions(data) {
       console.error('Error fetching brainstorm suggestions:', error);
   }
 }
+
 
 
 window.submitBrainstorm = submitBrainstorm;
