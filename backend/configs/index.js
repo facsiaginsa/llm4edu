@@ -5,6 +5,7 @@ module.exports = {
     IP_BIND: process.env.IP_BIND,
     MONGO_CONN_STRING: process.env.MONGO_CONN_STRING,
     MONGO_DATABASE: process.env.MONGO_DATABASE,
+    MONGO_BUCKET: process.env.MONGO_BUCKET,
     AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
     AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
     AWS_REGION_CONVERSE: process.env.AWS_REGION_CONVERSE,

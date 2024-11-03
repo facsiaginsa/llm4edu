@@ -1,6 +1,7 @@
 const fastify = require('fastify')
 const app = fastify()
 
+app.register(require('@fastify/multipart'))
 app.register(require("@fastify/cors"), { 
     origin: "*"
 })
