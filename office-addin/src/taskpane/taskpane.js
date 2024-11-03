@@ -8,7 +8,7 @@
 /**
  * Office Event Listener
  */
-
+import axios from 'axios';
 let popupTimeout;
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
@@ -90,6 +90,59 @@ export async function sendRephraseRequest(text) {
 /**
  * End of Rephrase Feature
  */
+
+
+/**
+ * Brainstorm Feature
+ */
+
+export async function submitBrainstorm() {
+  const input = document.getElementById('brainstorm-input').value;
+  console.log("Input text:", input);  // Log input to check if it's capturing correctly
+
+  try {
+    const response = await axios.post(`http://localhost:3001/brainstorm`, {
+      prompt: input,
+    });
+    console.log("API Response:", response);  // Log entire response
+
+    console.log("API suggestions:", response.data.brainstormIdea);
+    displayBrainstormSuggestions(response.data.brainstormIdea);  // Call the display function
+  } catch (error) {
+    console.error("Error fetching brainstorm suggestions:", error);
+  }
+}
+
+function displayBrainstormSuggestions(data) {
+  try {
+      console.log("brainstorm data:", data);
+      const brainstormIdea = JSON.parse(data);
+      const suggestions = Object.values(brainstormIdea);
+      
+      const suggestionElements = suggestions.map(suggestion => {
+          return `<li>${suggestion}</li>`;
+      }).join('');
+      
+      const suggestionsElement = document.getElementById('brainstorm-suggestions');
+      if (suggestionsElement) {
+          suggestionsElement.innerHTML = `<ul>${suggestionElements}</ul>`;
+      } else {
+          console.error('Element with id "suggestions" not found.');
+      }
+  } catch (error) {
+      console.error('Error fetching brainstorm suggestions:', error);
+  }
+}
+
+
+window.submitBrainstorm = submitBrainstorm;
+document.getElementById('brainstorm-button').addEventListener('click', submitBrainstorm);
+
+
+/**
+ * End of Brainstorm Feature
+ */
+
 
 // export async function getSuggestions() {
 //   const text = document.getElementById('academicText').value;
