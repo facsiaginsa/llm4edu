@@ -23,7 +23,6 @@ module.exports = function (app, opts, done) {
 
     done()
 }
-*/
 
 const axios = require('axios');
 const { OPENAI_API_KEY } = require('../../configs');
