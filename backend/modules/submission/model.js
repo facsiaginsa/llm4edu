@@ -1,3 +1,4 @@
+const { error } = require("console");
 const { MONGO_BUCKET, MONGO_DATABASE } = require("../../configs")
 const { converse } = require("../../loaders/langchain")
 const { mongoGridFS, mongoClient } = require("../../loaders/mongodb")
@@ -7,9 +8,31 @@ let db = mongoClient.db(MONGO_DATABASE)
 let bucket = mongoGridFS(db, MONGO_BUCKET)
 
 let sendConversation = async (conversation, type) => {
-    if (type === "invoke") return await converse.stream(conversation)
+    if (type === "invoke") return await converse.invoke(conversation)
     if (type === "stream") return await converse.stream(conversation)
 }
+
+let getDoc = async (docId) => {
+    return new Promise((resolve,reject) => {
+        let dataStream = bucket.openDownloadStreamByName(docId)
+
+        let data = []
+
+        dataStream.on("data", chunk => {
+            data.push(chunk)
+        })
+
+        dataStream.on("end", () => {
+            let dataBuffer = Buffer.concat(data).toString("base64")
+            resolve(dataBuffer)
+        })
+
+        dataStream.on("error", err => {
+            reject(error)
+        })
+    })
+}
+
 
 let uploadDoc = async(docId, docStream, docMetadata) => {
 
@@ -38,5 +61,6 @@ let uploadDoc = async(docId, docStream, docMetadata) => {
 
 module.exports = {
     sendConversation,
-    uploadDoc
+    uploadDoc,
+    getDoc
 }

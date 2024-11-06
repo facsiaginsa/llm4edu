@@ -1,7 +1,11 @@
 const fastify = require('fastify')
 const app = fastify()
 
-app.register(require('@fastify/multipart'))
+app.register(require('@fastify/multipart'), {
+    limits: {
+        fileSize: 52428800 // Bytes
+    }
+})
 app.register(require("@fastify/cors"), { 
     origin: "*"
 })

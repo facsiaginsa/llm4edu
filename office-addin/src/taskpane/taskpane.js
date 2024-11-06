@@ -8,14 +8,13 @@
 /**
  * Office Event Listener
  */
-import axios from 'axios';
 let popupTimeout;
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, () => {
       clearTimeout(popupTimeout);
       popupTimeout = setTimeout(rephraseConfirmation, 1000);  // 1 second delay
-    }); 
+    })
   }
 });
 
@@ -40,15 +39,99 @@ document.getElementById('rephrase-button').onclick = () => showTab("rephrase")
 document.getElementById('review-button').onclick = () => showTab("review")
 document.getElementById('summarize-button').onclick = () => showTab("summarize")
 
+
 /**
  * End of Features Tab Menu
+ */
+
+/**
+ * Submission Feature
+ */
+
+async function submissionReview() {
+
+  let publisher = document.getElementById('review-input').value;
+
+  return Word.run(async (context) => {
+
+    const file = await getFile()
+
+    const slices = file.sliceCount;
+    let byteArrays = [];
+
+    for (let i = 0; i < slices; i++) {
+        const slice = await getSlice(file, i)
+        byteArrays.push(new Uint8Array(slice.data));
+    }
+
+    file.closeAsync();
+
+    const blob = new Blob(byteArrays, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const formData = new FormData();
+    formData.append('file', blob, 'document.docx');
+
+    const response1 = await axios.post(process.env.BACKEND_URL + "/submission", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    console.log(response1)
+
+    const {docId} = response1.data.data
+
+    let response2 = new EventSource(process.env.BACKEND_URL + "/submission/review/" + docId + "?publisher=" + publisher)
+
+    const reviewContainer = document.getElementById('review-container');
+
+    reviewContainer.innerHTML = `<div id="review-response"></div>`;
+  
+    response2.onmessage = function(event) {
+      document.getElementById('review-response').textContent += event.data;
+    };
+  
+    response2.onerror = function(event) {
+      console.error('EventSource failed:', event);
+      response2.close();
+    };
+  })
+}
+
+async function getFile() {
+  return new Promise((resolve, reject) => {
+    Office.context.document.getFileAsync(Office.FileType.Compressed, { sliceSize: 65536 }, function (result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve(result.value);
+        } else {
+            reject(result.error);
+        }
+    });
+  });
+}
+
+async function getSlice(file, i) {
+  return await new Promise((resolve, reject) => {
+    file.getSliceAsync(i, function (result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve(result.value);
+        } else {
+            reject(result.error);
+        }
+    });
+  });
+}
+
+document.getElementById('review-submit-button').onclick = () => submissionReview()
+
+/**
+ * End of Submission Feature
  */
 
 /**
  * Rephrase Feature
  */
 
-export async function rephraseConfirmation() {
+async function rephraseConfirmation() {
   return Word.run(async (context) => {
     const range = context.document.getSelection();
     range.load("text");
@@ -69,7 +152,7 @@ export async function rephraseConfirmation() {
   });
 }
 
-export async function sendRephraseRequest(text) {
+async function sendRephraseRequest(text) {
 
   let response = new EventSource(process.env.BACKEND_URL + '/rephrase?text=' + text)
 
@@ -84,7 +167,7 @@ export async function sendRephraseRequest(text) {
   response.onerror = function(event) {
     console.error('EventSource failed:', event);
     response.close();
-};
+  };
 }
 
 /**
@@ -96,7 +179,7 @@ export async function sendRephraseRequest(text) {
  * Brainstorm Feature
  */
 
-export async function submitBrainstorm() {
+async function submitBrainstorm() {
   const input = document.getElementById('brainstorm-input').value;
   console.log("Input text:", input);  // Log input to check if it's capturing correctly
 
