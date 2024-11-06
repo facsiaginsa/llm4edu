@@ -33,6 +33,8 @@ module.exports = function (app, opts, done) {
             } 
             */
             //console.log(result.raw.end())
+
+            
             reply.code(201).send(result);
 
         } catch (error) {
