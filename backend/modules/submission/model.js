@@ -23,7 +23,7 @@ let getDoc = async (docId) => {
         })
 
         dataStream.on("end", () => {
-            let dataBuffer = Buffer.concat(data).toString("base64")
+            let dataBuffer = Buffer.concat(data)
             resolve(dataBuffer)
         })
 
