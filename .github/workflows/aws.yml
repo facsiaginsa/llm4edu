@@ -31,12 +31,12 @@ on:
     branches: [ "master" ]
 
 env:
-  AWS_REGION: ap-shouteast-1                   
+  AWS_REGION: ap-southeast-1                   
   DOCKER_REPOSITORY: facsiaginsa          
-  ECS_SERVICE: MY_ECS_SERVICE                
-  ECS_CLUSTER: llm4edu                 
+  ECS_SERVICE: llm4edu-backend                
+  ECS_CLUSTER: llm4edu-mongodb-hackathon
   ECS_TASK_DEFINITION: backend/task-definition.json 
-  CONTAINER_NAME: llm4edu-backend           
+  CONTAINER_NAME: llm4edu-backend
   
 permissions:
   contents: read
