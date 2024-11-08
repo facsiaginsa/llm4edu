@@ -15,7 +15,43 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [{ 
+                "name": "AWS_BEDROCK_MODEL_CONVERSE", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/AWS_BEDROCK_MODEL_CONVERSE" 
+            }, { 
+                "name": "AWS_BEDROCK_MODEL_EMBEDDING", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/AWS_BEDROCK_MODEL_EMBEDDING" 
+            }, { 
+                "name": "AWS_REGION_CONVERSE", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/AWS_REGION_CONVERSE" 
+            }, { 
+                "name": "AWS_REGION_EMBEDDING", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/AWS_REGION_EMBEDDING" 
+            }, { 
+                "name": "IP_BIND", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/IP_BIND" 
+            }, { 
+                "name": "MONGO_BUCKET", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/MONGO_BUCKET" 
+            }, { 
+                "name": "MONGO_DATABASE", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/MONGO_DATABASE" 
+            }, { 
+                "name": "NODE_ENV", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/NODE_ENV" 
+            }, { 
+                "name": "PORT", 
+                "value": "arn:aws:ssm:ap-southeast-1:528408140206:parameter/llm4edu/PORT" 
+            }, { 
+                "name": "AWS_ACCESS_KEY", 
+                "value": "arn:aws:secretsmanager:ap-southeast-1:528408140206:secret:llm4edu/secret-Y7tdWB:SecretString:AWS_ACCESS_KEY" 
+            }, { 
+                "name": "AWS_SECRET_KEY", 
+                "value": "arn:aws:secretsmanager:ap-southeast-1:528408140206:secret:llm4edu/secret-Y7tdWB:SecretString:AWS_SECRET_KEY" 
+            }, { 
+                "name": "MONGO_CONN_STRING", 
+                "value": "arn:aws:secretsmanager:ap-southeast-1:528408140206:secret:llm4edu/secret-Y7tdWB:SecretString:MONGO_CONN_STRING" 
+            }],
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
