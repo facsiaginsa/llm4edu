@@ -4,7 +4,17 @@
         {
             "name": "llm4edu-backend",
             "image": "facsiaginsa/backend",
-            "cpu": 0,
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL", 
+                    "curl -f http://localhost:3000/health-check || exit 1"
+                ], 
+                "interval": 30, 
+                "timeout": 5, 
+                "retries": 3, 
+                "startPeriod": 60
+            },
+            "cpu": 1,
             "portMappings": [
                 {
                     "name": "service-port",
