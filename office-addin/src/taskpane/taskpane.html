@@ -54,20 +54,24 @@
         <div id="rephrase-container"></div>
     </div>
 
-    <div id="review" class="tab">
-        <h3>Review</h3>
-        <p>Submit your document for review and get suggestions for improvements.</p>
-        <div id="review-suggestions"></div>
-    </div>
-
     <div id="summarize" class="tab">
         <h3>Summarize</h3>
         <p>Summarize the content of selected images.</p>
         <div id="summarize-container"></div>
     </div>
-    <script src="taskpane.js"></script>
-</body>
 
+    <div id="review" class="tab">
+        <h3>Review</h3>
+        <p>Submit your document for review and get suggestions for improvements.</p>
+        <label for="review-input">Where do you want to publish the document?</label>
+        <textarea id="review-input"></textarea>
+        <button id="review-submit-button">Review</button>
+        <div id="review-container"></div>
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<script src="taskpane.js"></script>
 
 </html>

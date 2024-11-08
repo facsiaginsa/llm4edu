@@ -8,13 +8,13 @@ let createConversation = async (text) => {
             ["human", text]
         ]
 
-        let results = await sendConversation(formattedMessage)
+        let result = await sendConversation(formattedMessage)
         
-        return [ null, results]
+        return [ null, result]
     } catch (error) {
         console.log("error", error);
+        return [ { code: 500, message: "There is error in the server"}, null ]
     }
-    
 }
 
 module.exports = {
