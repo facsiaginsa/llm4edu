@@ -22,7 +22,7 @@ module.exports = function (app, opts, done) {
             if (!item.response_metadata?.messageStop?.stopReason) {
                 res.raw.write(`data: ${item.content}\n\n`)
             } else {
-                return res.raw.end()
+                res.raw.write(`data: end_turn\n\n`)
             }
         }   
     })

@@ -3,66 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Academic Writing Assistant</title>
-    <style>
-        .inactive {
-            display: none;
-        }
-        .tab {
-            display: none;
-            width: 100%; 
-            height: 400px; 
-            box-sizing: border-box;
-        }
-        .tab.active { 
-            display: block; 
-        }
-        .tabs { 
-            display: flex; 
-            flex-wrap: wrap; 
-        }
-        .tabs button { 
-            flex: 1 1 25%; 
-            min-width: 100px; 
-            text-align: center; 
-            padding: 10px; 
-            cursor: pointer; 
-            box-sizing: border-box; 
-        }
-    </style>
-    
+    <link rel="stylesheet" href="custom.css">
+
 </head>
 <body>
     <div class="tabs">
-        <button id="brainstorm-button">Brainstorm</button>
-        <button id="rephrase-button">Rephrase</button>
-        <button id="review-button">Review</button>
-        <button id="summarize-button">Summarize</button>
+        <button id="brainstorm-button" class="tabs-button active">Brainstorm</button>
+        <button id="rephrase-button" class="tabs-button">Rephrase</button>
+        <button id="summarize-button" class="tabs-button">Summarize</button>
+        <button id="review-button" class="tabs-button">Review</button>
     </div>
 
     <hr/>
     <div id="brainstorm" class="tab active">
         <h3>Brainstorm</h3>
         <p>Brainstorm an Idea of what to write for you.</p>
+        <hr/>
         <textarea id="brainstorm-input"></textarea>
         <button onclick="submitBrainstorm()">Submit</button>
         <div id="brainstorm-suggestions"></div>
     </div>
 
     <div id="rephrase" class="tab">
-        <h3>Rephrase</h3>
-        <p>Rephrase selected text into a more academic style.</p>
+        <p class="help-text">
+            This feature will rephrases your selected text to improve its clarity, 
+            accuracy, engagement, and overall delivery.
+        </p>
+        <p class="help-text">
+            To use this feature, simply select some text in your document that you want to rephrase 
+            and a confirmation will appear in this task pane
+        </p>
+        <hr/>
         <div id="rephrase-container"></div>
     </div>
 
     <div id="summarize" class="tab">
         <h3>Summarize</h3>
         <p>Summarize the content of selected images.</p>
+        <hr/>
         <div id="summarize-container"></div>
     </div>
 
     <div id="review" class="tab">
         <h3>Review</h3>
         <p>Submit your document for review and get suggestions for improvements.</p>
+        <hr/>
         <label for="review-input">Where do you want to publish the document?</label>
         <textarea id="review-input"></textarea>
         <button id="review-submit-button">Review</button>

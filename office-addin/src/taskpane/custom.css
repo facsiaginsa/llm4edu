@@ -1,0 +1,96 @@
+.inactive {
+    display: none;
+}
+.tab {
+    display: none;
+    width: 100%; 
+    height: 400px; 
+    box-sizing: border-box;
+}
+.tab.active { 
+    display: block;
+}
+.tabs {
+    display: flex; 
+    flex-wrap: wrap; 
+}
+.tabs button { 
+    flex: 1 1 25%; 
+    min-width: 100px; 
+    text-align: center; 
+    padding: 10px; 
+    margin: 1px;
+    cursor: pointer; 
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #DCDCDC;
+}
+.tabs button.active {
+    background-color: #99D5FF;
+    border-color: #DCDCDC;
+    border-width: 0.2cap;
+    font-weight: bold;
+}
+
+body {
+    background-color: #DCDCDC;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+.rephase-confirmation-box {
+    border-color: #FFFFFF;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+
+.rephrase-response-box {
+    border-color: #FFFFFF;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+
+.rephase-confirmation-box span{
+    color: #2fa8ff;
+    font-weight: bold;
+    font-size: smaller;
+    cursor: pointer;
+}
+
+.rephrase-response-box span{
+    color: #2fa8ff;
+    font-weight: bold;
+    font-size: smaller;
+    cursor: pointer;
+}
+
+.help-text {
+    font-size: smaller;
+}
+
+.loader { 
+    border: 2px solid #f3f3f3; 
+    border-top: 2px solid #3498db; 
+    border-radius: 50%; 
+    width: 10px; 
+    height: 10px; 
+    animation: spin 2s linear infinite;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+} 
+
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}

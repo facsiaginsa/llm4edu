@@ -13,7 +13,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, () => {
       clearTimeout(popupTimeout);
-      popupTimeout = setTimeout(rephraseConfirmation, 1000);  // 1 second delay
+      popupTimeout = setTimeout(rephraseConfirmation, 500);  // 1 second delay
     })
   }
 });
@@ -28,10 +28,17 @@ Office.onReady((info) => {
 
 function showTab(tab) {
   const tabs = document.querySelectorAll('.tab');
+  const tabsButton = document.querySelectorAll('.tabs-button');
   tabs.forEach(tab => {
     tab.classList.remove('active');
   });
+
+  tabsButton.forEach(tab => {
+    tab.classList.remove('active');
+  });
+
   document.getElementById(tab).classList.add('active');
+  document.getElementById(tab + "-button").classList.add('active');
 }
 
 document.getElementById('brainstorm-button').onclick = () => showTab("brainstorm")
@@ -39,13 +46,13 @@ document.getElementById('rephrase-button').onclick = () => showTab("rephrase")
 document.getElementById('review-button').onclick = () => showTab("review")
 document.getElementById('summarize-button').onclick = () => showTab("summarize")
 
-
 /**
  * End of Features Tab Menu
  */
 
+
 /**
- * Submission Feature
+ * Submission Review Feature
  */
 
 async function submissionReview() {
@@ -141,13 +148,15 @@ async function rephraseConfirmation() {
       showTab("rephrase")
       const rephraseContainer = document.getElementById('rephrase-container');
       rephraseContainer.innerHTML = `
-        <div>
-          Rephrase text?
-          <button id="rephrase-confirmation">Yes</button>
+        <div class="rephase-confirmation-box">
+          <p>${range.text}</p>
+          <span id="rephrase-confirmation">Rephrase this text!</span>
         </div>
-      `;
-
-      document.getElementById('rephrase-confirmation').onclick = () => sendRephraseRequest(range.text)
+      `
+      document.getElementById('rephrase-confirmation').onclick = () => {
+        loadingAnimation()
+        sendRephraseRequest(range.text)
+      }
     }
   });
 }
@@ -158,16 +167,53 @@ async function sendRephraseRequest(text) {
 
   const rephraseContainer = document.getElementById('rephrase-container');
 
-  rephraseContainer.innerHTML = `<div id="rephrase-response"></div>`;
-
+  let eventStart = 0
   response.onmessage = function(event) {
-    document.getElementById('rephrase-response').textContent += event.data;
+
+    if (eventStart == 0) {
+      rephraseContainer.innerHTML = `
+        <div id="rephrase-response" class="rephrase-response-box">
+          <p id="rephrase-response-text"></p>
+          <span onClick="copyToClipboard()" id="rephrase-response-copy">Copy Text!</span>
+        </div>`;
+      eventStart++
+    }
+
+    console.log(event)
+
+    if (event.data == "end_turn") {
+      eventStart = 0
+      return response.close();
+    }
+  
+    document.getElementById('rephrase-response-text').textContent += event.data;
   };
 
   response.onerror = function(event) {
-    console.error('EventSource failed:', event);
     response.close();
+    eventStart = 0
   };
+}
+
+async function copyToClipboard() {
+  let text = document.getElementById('rephrase-response-text').textContent;
+
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('rephrase-response-copy').textContent = "Text Copied!"
+  })
+
+  setTimeout(() => { 
+    document.getElementById('rephrase-response-copy').textContent = "Copy Text!"; 
+  }, 2000);
+}
+
+async function loadingAnimation() {
+  const rephraseContainer = document.getElementById('rephrase-container');
+  rephraseContainer.innerHTML = `
+    <div class="rephase-confirmation-box">
+      <div class="loader"></div>
+    </div>
+  `
 }
 
 /**
