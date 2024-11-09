@@ -1,8 +1,10 @@
 const { MONGO_DATABASE } = require("../../configs")
 const { mongoClient } = require("../../loaders/mongodb.js")
-const { converse } = require("../../loaders/langchain.js")
+const { converse, embedding } = require("../../loaders/langchain.js")
 const { collectionWithVector, collectionWithVectorRetriever } = require("../../loaders/langchain.js");
-import { createRetrievalChain } from "langchain/chains/retrieval";
+const { createRetrievalChain } = require("langchain/chains/retrieval");
+const { ChatPromptTemplate } = require("@langchain/core/prompts")
+const { createStuffDocumentsChain } = require("langchain/chains/combine_documents")
 
 let collection = mongoClient.db(MONGO_DATABASE).collection("paper")
 
@@ -35,19 +37,17 @@ let sendBrainstorm = async (conversation) => {
         ["human", "{input}"],
     ]);
 
-    const connector = collectionWithVectorRetriever(collection);
+    const vectorStore = await collectionWithVector(collection);
+    conversation = JSON.stringify(conversation)
+    let iniEmbeddings = await embedding.embedQuery(conversation)
+    iniEmbeddings = JSON.stringify(iniEmbeddings)
+    iniEmbeddings = JSON.parse(iniEmbeddings);
 
-    const questionAnswerChain = await createStuffDocumentsChain({
-        converse,
-        prompt,
-      });
-
-    const ragChain = await createRetrievalChain({
-        connector,
-        combineDocsChain: questionAnswerChain,
-    });
-
-    return await converse.invoke(conversation)
+    let basicOutput = await vectorStore.similaritySearchVectorWithScore(iniEmbeddings, 4);
+    
+    console.log("basic output: ", basicOutput)
+    
+    return basicOutput 
 }
 
 /**

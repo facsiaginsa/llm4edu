@@ -27,27 +27,16 @@ const embedding = new BedrockEmbeddings({
 
 const collectionWithVector = async (collection) => {
     let mongoConnector = new MongoDBAtlasVectorSearch(embedding, { 
-        collection,
+        collection: collection,
         embeddingKey: "vector",
-        textKey: "content"
+        textKey: "content",
+        indexName: "paper_index"
     })
     return mongoConnector
 }
-
-const collectionWithVectorRetriever = async (collection) => {
-    let mongoConnector = new MongoDBAtlasVectorSearch(embedding, { 
-        collection,
-        embeddingKey: "vector",
-        textKey: "content"
-    })
-    return mongoConnector.asRetriever();
-}
-
-
 
 module.exports = {
     converse,
     embedding,
     collectionWithVector,
-    collectionWithVectorRetriever
 }

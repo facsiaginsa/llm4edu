@@ -10,7 +10,8 @@ module.exports = function (app, opts, done) {
     // Create (POST) - Generate brainstorming ideas using ChatGPT
     app.post('/', async (request, reply) => {
         const { prompt } = request.body;
-
+        const promptInput = JSON.stringify(prompt);
+        
         try {
             let [ err, result ] = await createBrainstorm(prompt)
             //console.log(result)
