@@ -2,9 +2,7 @@ const { MONGO_DATABASE } = require("../../configs")
 const { mongoClient } = require("../../loaders/mongodb.js")
 const { converse, embedding } = require("../../loaders/langchain.js")
 const { collectionWithVector, collectionWithVectorRetriever } = require("../../loaders/langchain.js");
-const { createRetrievalChain } = require("langchain/chains/retrieval");
-const { ChatPromptTemplate } = require("@langchain/core/prompts")
-const { createStuffDocumentsChain } = require("langchain/chains/combine_documents")
+const { ChatPromptTemplate, PromptTemplate  } = require("@langchain/core/prompts")
 
 let collection = mongoClient.db(MONGO_DATABASE).collection("paper")
 
@@ -23,31 +21,50 @@ let searchDocumentVector = async (query) =>{
 let sendBrainstorm = async (conversation) => {
 
 
-    const systemPrompt =
-        "You are an assistant for question-answering tasks. " +
-        "Use the following pieces of retrieved context to answer " +
-        "the question. If you don't know the answer, say that you " +
-        "don't know. Use three sentences maximum and keep the " +
-        "answer concise." +
-        "\n\n" +
-        "{context}";
+        const systemPrompt =
+            "You are an assistant for question-answering tasks. " +
+            "Use the following pieces of retrieved context to answer " +
+            "the question. If you don't know the answer, say that you " +
+            "don't know. Use three sentences maximum and keep the " +
+            "answer concise." +
+            "\n\n" +
+            "{context}";
 
-    const prompt = ChatPromptTemplate.fromMessages([
-        ["system", systemPrompt],
-        ["human", "{input}"],
-    ]);
+        /*    
+        const prompt = ChatPromptTemplate.fromMessages([
+            ["system", systemPrompt],
+            ["human", "{input}"],
+        ]);
+        */
+        const prompt = PromptTemplate.fromTemplate(`You are a helpful assistant.
 
-    const vectorStore = await collectionWithVector(collection);
-    conversation = JSON.stringify(conversation)
-    let iniEmbeddings = await embedding.embedQuery(conversation)
-    iniEmbeddings = JSON.stringify(iniEmbeddings)
-    iniEmbeddings = JSON.parse(iniEmbeddings);
+            Here is the context of the question:
 
-    let basicOutput = await vectorStore.similaritySearchVectorWithScore(iniEmbeddings, 4);
-    
-    console.log("basic output: ", basicOutput)
-    
-    return basicOutput 
+            {context}
+            
+            Now, answer 5 title for the following question:
+            
+            {content}`);
+
+
+        // Collection Vector
+        const vectorStore = await collectionWithVector(collection);
+        //conversation = JSON.stringify(conversation)
+        let iniEmbeddings = await embedding.embedQuery(conversation)
+        iniEmbeddings = JSON.stringify(iniEmbeddings)
+        iniEmbeddings = JSON.parse(iniEmbeddings);
+
+        let basicOutput = await vectorStore.similaritySearchVectorWithScore(iniEmbeddings, 4);
+        
+        //console.log("basic output: ", basicOutput)
+        
+        // Chain
+        const llm = converse
+        const chain = prompt.pipe(llm);
+        const response = await chain.invoke({ content: conversation, context: basicOutput});
+        typeof("di model: ", typeof(response))
+        //return await converse.stream(conversation)
+    return response
 }
 
 /**
