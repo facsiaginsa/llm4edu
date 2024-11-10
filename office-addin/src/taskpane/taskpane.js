@@ -58,6 +58,7 @@ document.getElementById('summarize-button').onclick = () => showTab("summarize")
 async function submissionReview() {
 
   let publisher = document.getElementById('review-input').value;
+  loadingReviewAnimation()
 
   return Word.run(async (context) => {
 
@@ -83,22 +84,58 @@ async function submissionReview() {
       }
     })
 
-    console.log(response1)
-
     const {docId} = response1.data.data
 
     let response2 = new EventSource(process.env.BACKEND_URL + "/submission/review/" + docId + "?publisher=" + publisher)
 
     const reviewContainer = document.getElementById('review-container');
 
-    reviewContainer.innerHTML = `<div id="review-response"></div>`;
-  
+    let eventStart = 0
+    let stringData = ""
+    let regex = /<li class='review-response'>([\s\S]*?)<\/li>/g
+    let reviewList = 0
+
     response2.onmessage = function(event) {
-      document.getElementById('review-response').textContent += event.data;
+      if (eventStart == 0) {
+        reviewContainer.innerHTML = `<div><ol id="review-response" class="review-response-ol"></ol></div>`;
+        eventStart++
+      }
+
+      if (event.data == "end_turn") {
+        eventStart = 0
+        reviewList = 0
+        console.log("end_turn", event.data)
+        return response2.close();
+      }
+
+      stringData += event.data
+      console.log("stringData", stringData)
+
+      let found = stringData.match(regex)
+
+      if (found && found.length != reviewList) {
+        console.log("stringData found", stringData)
+        document.getElementById('review-response').innerHTML += found[reviewList];
+        reviewList = found.length
+      }
+      
+      // if (event.data == "###") {
+      //   let reviewReponse = document.getElementById("review-response")
+      //   let lines = document.createElement("p")
+      //   lines.id = "review-response-" + reviewCount
+      //   reviewReponse.appendChild(lines)
+      //   reviewCount++
+      // } else {
+      //   if (document.getElementById('review-response-' + (reviewCount -1))) {
+      //     document.getElementById('review-response-' + (reviewCount -1)).textContent += event.data;
+      //   }
+      // }
     };
   
     response2.onerror = function(event) {
       console.error('EventSource failed:', event);
+      eventStart = 0
+      reviewList = 0
       response2.close();
     };
   })
@@ -130,6 +167,15 @@ async function getSlice(file, i) {
 
 document.getElementById('review-submit-button').onclick = () => submissionReview()
 
+async function loadingReviewAnimation() {
+  const reviewContainer = document.getElementById('review-container');
+  reviewContainer.innerHTML = `
+    <div class="review-response">
+      <div class="loader"></div>
+    </div>
+  `
+}
+
 /**
  * End of Submission Feature
  */
@@ -154,7 +200,7 @@ async function rephraseConfirmation() {
         </div>
       `
       document.getElementById('rephrase-confirmation').onclick = () => {
-        loadingAnimation()
+        loadingRephraseAnimation()
         sendRephraseRequest(range.text)
       }
     }
@@ -178,8 +224,6 @@ async function sendRephraseRequest(text) {
         </div>`;
       eventStart++
     }
-
-    console.log(event)
 
     if (event.data == "end_turn") {
       eventStart = 0
@@ -207,7 +251,7 @@ async function copyToClipboard() {
   }, 2000);
 }
 
-async function loadingAnimation() {
+async function loadingRephraseAnimation() {
   const rephraseContainer = document.getElementById('rephrase-container');
   rephraseContainer.innerHTML = `
     <div class="rephase-confirmation-box">

@@ -45,12 +45,20 @@
     </div>
 
     <div id="review" class="tab">
-        <h3>Review</h3>
-        <p>Submit your document for review and get suggestions for improvements.</p>
+        <p class="help-text">
+            This feature will review your entire document and evaluate it according to the requirements 
+            set by your selected publisher.
+        </p>
+        <p class="help-text">
+            To use this feature, simply fill out the form below of your desired publisher. 
+            We will review the document based on the publisher's requirements and provide you with tailored feedback accordingly.
+        </p>
         <hr/>
-        <label for="review-input">Where do you want to publish the document?</label>
-        <textarea id="review-input"></textarea>
-        <button id="review-submit-button">Review</button>
+        <div class="review-form-box">
+            <label for="review-input">Where would you like to publish your document?</label>
+            <textarea class="review-form-textarea" id="review-input"></textarea>
+            <span id="review-submit-button">Review!</button>
+        </div>
         <div id="review-container"></div>
     </div>
 

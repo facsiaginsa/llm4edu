@@ -47,7 +47,6 @@ module.exports = function (app, opts, done) {
 
         for await (const item of result) {
             if (!item.response_metadata?.messageStop?.stopReason) {
-                // console.log(item)
                 process.stdout.write(item.content)
                 res.raw.write(`data: ${item.content}\n\n`)
             } else {
