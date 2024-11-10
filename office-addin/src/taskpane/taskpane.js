@@ -274,21 +274,23 @@ async function submitBrainstorm() {
 
 function displayBrainstormSuggestions(brainstormIdea) {
   try {
-      console.log("brainstorm idea:", brainstormIdea);
-      const suggestions = Object.values(brainstormIdea);
+    // Check if brainstormIdea is an array; if not, convert it
+    let suggestions = Array.isArray(brainstormIdea)
+      ? brainstormIdea
+      : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
+
+    const suggestionElements = suggestions
+      .map(suggestion => `<li>${suggestion}</li>`)
+      .join('');
       
-      const suggestionElements = suggestions.map(suggestion => {
-          return `<li>${suggestion}</li>`;
-      }).join('');
-      
-      const suggestionsElement = document.getElementById('brainstorm-suggestions');
-      if (suggestionsElement) {
-          suggestionsElement.innerHTML = `<ul>${suggestionElements}</ul>`;
-      } else {
-          console.error('Element with id "suggestions" not found.');
-      }
+    const suggestionsElement = document.getElementById('brainstorm-suggestions');
+    if (suggestionsElement) {
+      suggestionsElement.innerHTML = `<ul>${suggestionElements}</ul>`;
+    } else {
+      console.error('Element with id "brainstorm-suggestions" not found.');
+    }
   } catch (error) {
-      console.error('Error fetching brainstorm suggestions:', error);
+    console.error('Error fetching brainstorm suggestions:', error);
   }
 }
 
