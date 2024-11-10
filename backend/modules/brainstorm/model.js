@@ -42,7 +42,7 @@ let sendBrainstorm = async (conversation) => {
 
             {context}
             
-            Now, answer (to the point) 5 title for the following question:
+            Now, answer (to the point - without numbering and quotation mark) 5 title for the following question:
             
             {content}
             
