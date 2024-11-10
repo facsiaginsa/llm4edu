@@ -1,6 +1,7 @@
 const { requestEmbedding } = require("../embedding/service")
 const { insertDocumentVector } = require("./model")
 
+
 let createBrainstormTrainData = async (documents) => {
     try {
 
@@ -29,10 +30,31 @@ let createBrainstormTrainData = async (documents) => {
     }
 }
 
+const { sendBrainstorm } = require("./model")
+let createBrainstorm = async (text) => {
+    try {
+         /*
+        let formattedMessage = [
+            //["system", "You are a creative brainstorming assistant who only make an insightful title. Do not answer if the user ask out of topic. Give only five topics using this json format {\"topic1\":\"...\", ...,  \"topic5\":\"...\" }"],
+            ["input", text]
+        ]
+            */
+
+        let results = await sendBrainstorm(text)
+        console.log(results.content)
+
+        return [ null, results.content]
+    } catch (error) {
+        console.log("error", error);
+    }
+    
+}
+
 /**
  * Create other services here
  */
 
 module.exports = {
-    createBrainstormTrainData
+    createBrainstormTrainData,
+    createBrainstorm
 }

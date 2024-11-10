@@ -265,33 +265,55 @@ async function submitBrainstorm() {
     });
     console.log("API Response:", response);  // Log entire response
 
-    console.log("API suggestions:", response.data.brainstormIdea);
-    displayBrainstormSuggestions(response.data.brainstormIdea);  // Call the display function
+    console.log("API suggestions:", response.data);
+    displayBrainstormSuggestions(response.data);  // Call the display function
   } catch (error) {
     console.error("Error fetching brainstorm suggestions:", error);
   }
 }
 
-function displayBrainstormSuggestions(data) {
+function displayBrainstormSuggestions(brainstormIdea) {
   try {
-      console.log("brainstorm data:", data);
-      const brainstormIdea = JSON.parse(data);
-      const suggestions = Object.values(brainstormIdea);
-      
-      const suggestionElements = suggestions.map(suggestion => {
-          return `<li>${suggestion}</li>`;
-      }).join('');
+      // Check if brainstormIdea is an array; if not, convert it
+      let suggestions = Array.isArray(brainstormIdea)
+          ? brainstormIdea
+          : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
+
+      const suggestionElements = suggestions
+          .map(suggestion => `
+              <div class="card" onclick="copyToWord(this)">
+                  <p>${suggestion}</p>
+              </div>
+          `)
+          .join('');
       
       const suggestionsElement = document.getElementById('brainstorm-suggestions');
       if (suggestionsElement) {
-          suggestionsElement.innerHTML = `<ul>${suggestionElements}</ul>`;
+          suggestionsElement.innerHTML = suggestionElements;
       } else {
-          console.error('Element with id "suggestions" not found.');
+          console.error('Element with id "brainstorm-suggestions" not found.');
       }
   } catch (error) {
       console.error('Error fetching brainstorm suggestions:', error);
   }
 }
+function copyToWord(cardElement) {
+  const content = cardElement.innerText; // Ambil teks dari kartu yang diklik
+  
+  Office.onReady((info) => {
+      if (info.host === Office.HostType.Word) {
+          Word.run(async (context) => {
+              const body = context.document.body;
+              body.insertText(content, Word.InsertLocation.end); // Masukkan teks ke Word di bagian akhir
+              await context.sync();
+          }).catch((error) => {
+              console.error("Error inserting text into Word:", error);
+          });
+      }
+  });
+}
+
+
 
 
 window.submitBrainstorm = submitBrainstorm;
