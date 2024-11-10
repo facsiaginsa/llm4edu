@@ -23,19 +23,6 @@ let saveDocument = async (data) => {
 
 let reviewDocument = async (publisher, docId) => {
     try {
-
-        let getRequirementMessage = [
-            ["system", 
-                "You are a helpful and expert paper reviewer" +
-                "Your task is to search for the paper submission requirements from the given publisher. " +
-                "If you cannot find the requirements, please answer with a list of the general requirements" + 
-                "for a good academic paper. Answer directly in numbered list format without needing an introduction"
-            ],
-            ["human", "What is the requirements to publish an academic paper in " + publisher + "?"]
-        ]
-
-        let result1 = await sendConversation(getRequirementMessage, "invoke")
-
         let document = await getDoc(docId)
 
         let humanMessage1 = new HumanMessage({
@@ -51,17 +38,38 @@ let reviewDocument = async (publisher, docId) => {
                 }
                 }, {
                 type: "text", 
-                text: "In 1 to 3 word(s), please tell me What is the research area of this document?",
+                text: "In 1 to 3 word(s), without any punctuation mark, tell me What is the research area of this document?",
                 }]
         })
 
+        let getRequirementMessage = [
+            ["system", 
+                "You are a helpful assistant."
+            ],
+            ["user",
+                "What are the requirements for publishing an academic paper in " + publisher + "? " +
+                "Do not include any requirement regarding submission process, expert review, payment, and plagiarism check. " +
+                "If you cannot find the specific requirements, " + 
+                "please provide a list of general criteria for a good academic paper. " + 
+                "Ensure each requirement is written in a list of single sentence with semicolon ending, and follow this format:\n" +
+                "1. {1st requirement}.\n" + 
+                "2. {2nd requirement}.\n" +
+                "3. {nth requirement}." 
+            ]
+        ]
 
         let getResearchAreaMessage = [
             ["system", "You are a helpful researchers"],
             ...[humanMessage1]
         ]
 
-        let result2 = await sendConversation(getResearchAreaMessage, "invoke")
+        let [ result1, result2 ] = await Promise.all([ 
+            sendConversation(getRequirementMessage, "invoke"),
+            sendConversation(getResearchAreaMessage, "invoke")
+         ])
+
+        console.log("requirement: ", result1.content)
+        console.log("research area: ", result2.content)
 
         let humanMessage2 = new HumanMessage({
             role: "user",
@@ -76,26 +84,24 @@ let reviewDocument = async (publisher, docId) => {
                 }
                 }, {
                 type: "text", 
-                text: "Please review this document according to the given requirement below"
-                }, {
-                type: "text", 
-                text: "requirement:\n\n " + result1.content
+                text: "requirements:\n ###\n" + result1.content + "\n###"
                 }]
         })
 
         let getReviewMessage = [
             ["system", 
                 "You are a peer reviewer from " + publisher + " and an expert in " + result2.content + ". " +
-                "Your task is to review an uploaded academic document based on the provided requirements." +
-                "If you identify any corrections needed in the document, " +
-                "specify the words, sentences, paragraphs, tables, or images that require attention, along with the page number." + 
-                "Ensure your feedback is concise and easy to understand. If you cannot check one of the requirements," +
-                "simply ignore it and move on to the next. Please use the following HTML format for each of your reviews:" +
+                "Your task is to identify any issue on the uploaded academic documents based on the requirements provided by user. " +
+                "If you identify an issue on the document, specify the words, sentences, paragraphs, tables, " +
+                "or images that require attention, along with the page number, and then for each of the issue, please provide some corrections, guidance, or example accordingly. " + 
+                "Each requirements may produce multiple issue, and each issue can produce multiple solutions. " +
+                "Ensure your solutions is concise and easy to understand. If you cannot proof the issue, " +
+                "simply ignore it and move on to the next. Please use the following HTML format for each of your solutions:" +
                 "\n\n" +
                 "<li class='review-response'>" +
-                "<p><strong>Page:</strong> {Specify the page number where the issue is located. Write '-' if the issue is not relevant to a specific page}</p>\n" +
-                "<p><strong>Issue:</strong> {Describe the issue}</p>\n" +
-                "<p><strong>Recommendation:</strong> {Provide guidance & example on how to fix the issue}</p>" +
+                "<p><strong>Issue {issue number}</strong></p>\n" +
+                "<p>{Describe the issue, relevan to the requirement}</p>\n" +
+                "<p><strong>Recommendation:</strong> {Provide corrections, guidance, and example on how to fix the issue based on your expertise, do not use any html element}</p>" +
                 "</li>"
             ],
             ...[ humanMessage2 ]
@@ -120,8 +126,6 @@ let downloadDocument = async (docId) => {
         console.log(error)
         return [ { code: 500, message: "There is error in the server"}, null ]
     }
-    
-
 }
 
 module.exports = {
