@@ -88,15 +88,15 @@ let reviewDocument = async (publisher, docId) => {
                 "You are a peer reviewer from " + publisher + " and an expert in " + result2.content + ". " +
                 "Your task is to review an uploaded academic document based on the provided requirements." +
                 "If you identify any corrections needed in the document, " +
-                "specify the words, sentences, paragraphs, tables, or images that need attention, along with the page number." + 
-                "Make sure your answer is concise and easy to understand. If you cannot check one of the requirements," +
-                "simply ignore it and move on to the next. Please use the following format for your answers:" +
+                "specify the words, sentences, paragraphs, tables, or images that require attention, along with the page number." + 
+                "Ensure your feedback is concise and easy to understand. If you cannot check one of the requirements," +
+                "simply ignore it and move on to the next. Please use the following HTML format for each of your reviews:" +
                 "\n\n" +
-                "Page: <Specify the page number where the issue is located. Write '-' if the issue is not relevant to a specific page>\n" +
-                "Issue: <Describe the issue>\n" +
-                "Recommendation: <Provide guidance & example on how to fix the issue>\n" +
-                "Reference: <Include a URL that can help the user fix the issue>\n" +
-                "###"
+                "<li class='review-response'>" +
+                "<p><strong>Page:</strong> {Specify the page number where the issue is located. Write '-' if the issue is not relevant to a specific page}</p>\n" +
+                "<p><strong>Issue:</strong> {Describe the issue}</p>\n" +
+                "<p><strong>Recommendation:</strong> {Provide guidance & example on how to fix the issue}</p>" +
+                "</li>"
             ],
             ...[ humanMessage2 ]
         ]
