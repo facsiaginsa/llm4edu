@@ -12,10 +12,7 @@ let insertDocumentVector = async (vectors, documents) => {
 }
 
 let searchDocumentVector = async (query) =>{
-    //let result_query = await collectionWithVector(collection).similaritySearch(query, k=1)
-    //let as_output = result_query[0].page_content
     let retriever = collectionWithVector(collection).as_retriever()
-    //let qa = RetrievalQA.
 }
 
 let sendBrainstorm = async (conversation) => {
@@ -42,7 +39,7 @@ let sendBrainstorm = async (conversation) => {
 
             {context}
             
-            Now, answer (to the point) 5 title for the following question:
+            Now, answer (to the point - without numbering and quotation mark) 5 title for the following question:
             
             {content}
             
@@ -61,7 +58,7 @@ let sendBrainstorm = async (conversation) => {
         //console.log("basic output: ", basicOutput)
         
         // Chain
-        const llm = converse
+        const llm = converse(0.2, 0.4)
         const chain = prompt.pipe(llm);
         const response = await chain.invoke({ content: conversation, context: basicOutput});
         typeof("di model: ", typeof(response))
