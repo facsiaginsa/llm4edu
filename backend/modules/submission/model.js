@@ -8,8 +8,9 @@ let db = mongoClient.db(MONGO_DATABASE)
 let bucket = mongoGridFS(db, MONGO_BUCKET)
 
 let sendConversation = async (conversation, type) => {
-    if (type === "invoke") return await converse.invoke(conversation)
-    if (type === "stream") return await converse.stream(conversation)
+    let converseBedrock = converse(0.2, 0.4)
+    if (type === "invoke") return await converseBedrock.invoke(conversation)
+    if (type === "stream") return await converseBedrock.stream(conversation)
 }
 
 let getDoc = async (docId) => {
