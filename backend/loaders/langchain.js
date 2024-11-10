@@ -1,5 +1,6 @@
 let { ChatBedrockConverse, BedrockEmbeddings } = require("@langchain/aws");
 let { MongoDBAtlasVectorSearch } = require("@langchain/mongodb")
+//let { RetrievalQAChain } = require("langchain/chains");
 const { AWS_BEDROCK_MODEL_CONVERSE, AWS_REGION_CONVERSE, AWS_SECRET_KEY, AWS_ACCESS_KEY, AWS_BEDROCK_MODEL_EMBEDDING, AWS_REGION_EMBEDDING } = require("../configs");
 
 const converse = (temperature, topP) => {
@@ -28,9 +29,10 @@ const embedding = new BedrockEmbeddings({
 
 const collectionWithVector = async (collection) => {
     let mongoConnector = new MongoDBAtlasVectorSearch(embedding, { 
-        collection,
+        collection: collection,
         embeddingKey: "vector",
-        textKey: "content"
+        textKey: "content",
+        indexName: "paper_index"
     })
     return mongoConnector
 }
@@ -38,5 +40,5 @@ const collectionWithVector = async (collection) => {
 module.exports = {
     converse,
     embedding,
-    collectionWithVector
+    collectionWithVector,
 }
