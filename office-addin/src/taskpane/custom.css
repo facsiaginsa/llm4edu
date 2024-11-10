@@ -104,6 +104,16 @@ body {
     padding: 10px;
 }
 
+.review-form-text {
+    border: none;
+    border-bottom: 1px solid #2fa8ff;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 90%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 textarea {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -126,6 +136,10 @@ textarea:focus {
     font-weight: bold;
     font-size: smaller;
     cursor: pointer;
+}
+
+.review-response-ol {
+    padding-left: 0px;
 }
 
 .review-response {
