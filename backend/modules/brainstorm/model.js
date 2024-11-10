@@ -20,7 +20,7 @@ let searchDocumentVector = async (query) =>{
 
 let sendBrainstorm = async (conversation) => {
 
-
+        /*
         const systemPrompt =
             "You are an assistant for question-answering tasks. " +
             "Use the following pieces of retrieved context to answer " +
@@ -30,7 +30,7 @@ let sendBrainstorm = async (conversation) => {
             "\n\n" +
             "{context}";
 
-        /*    
+           
         const prompt = ChatPromptTemplate.fromMessages([
             ["system", systemPrompt],
             ["human", "{input}"],
@@ -42,9 +42,11 @@ let sendBrainstorm = async (conversation) => {
 
             {context}
             
-            Now, answer 5 title for the following question:
+            Now, answer (to the point) 5 title for the following question:
             
-            {content}`);
+            {content}
+            
+            `);
 
 
         // Collection Vector

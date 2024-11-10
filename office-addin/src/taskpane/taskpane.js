@@ -274,25 +274,45 @@ async function submitBrainstorm() {
 
 function displayBrainstormSuggestions(brainstormIdea) {
   try {
-    // Check if brainstormIdea is an array; if not, convert it
-    let suggestions = Array.isArray(brainstormIdea)
-      ? brainstormIdea
-      : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
+      // Check if brainstormIdea is an array; if not, convert it
+      let suggestions = Array.isArray(brainstormIdea)
+          ? brainstormIdea
+          : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
 
-    const suggestionElements = suggestions
-      .map(suggestion => `<li>${suggestion}</li>`)
-      .join('');
+      const suggestionElements = suggestions
+          .map(suggestion => `
+              <div class="card" onclick="copyToWord(this)">
+                  <p>${suggestion}</p>
+              </div>
+          `)
+          .join('');
       
-    const suggestionsElement = document.getElementById('brainstorm-suggestions');
-    if (suggestionsElement) {
-      suggestionsElement.innerHTML = `<ul>${suggestionElements}</ul>`;
-    } else {
-      console.error('Element with id "brainstorm-suggestions" not found.');
-    }
+      const suggestionsElement = document.getElementById('brainstorm-suggestions');
+      if (suggestionsElement) {
+          suggestionsElement.innerHTML = suggestionElements;
+      } else {
+          console.error('Element with id "brainstorm-suggestions" not found.');
+      }
   } catch (error) {
-    console.error('Error fetching brainstorm suggestions:', error);
+      console.error('Error fetching brainstorm suggestions:', error);
   }
 }
+function copyToWord(cardElement) {
+  const content = cardElement.innerText; // Ambil teks dari kartu yang diklik
+  
+  Office.onReady((info) => {
+      if (info.host === Office.HostType.Word) {
+          Word.run(async (context) => {
+              const body = context.document.body;
+              body.insertText(content, Word.InsertLocation.end); // Masukkan teks ke Word di bagian akhir
+              await context.sync();
+          }).catch((error) => {
+              console.error("Error inserting text into Word:", error);
+          });
+      }
+  });
+}
+
 
 
 
