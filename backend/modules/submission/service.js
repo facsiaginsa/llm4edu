@@ -48,6 +48,7 @@ let reviewDocument = async (publisher, docId) => {
             ],
             ["user",
                 "What are the requirements for publishing an academic paper in " + publisher + "? " +
+                "Do not include any requirement regarding submission process, expert review, payment, and plagiarism check. " +
                 "If you cannot find the specific requirements, " + 
                 "please provide a list of general criteria for a good academic paper. " + 
                 "Ensure each requirement is written in a list of single sentence with semicolon ending, and follow this format:\n" +
