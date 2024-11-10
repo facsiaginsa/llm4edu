@@ -109,27 +109,13 @@ async function submissionReview() {
       }
 
       stringData += event.data
-      console.log("stringData", stringData)
 
       let found = stringData.match(regex)
 
       if (found && found.length != reviewList) {
-        console.log("stringData found", stringData)
         document.getElementById('review-response').innerHTML += found[reviewList];
         reviewList = found.length
       }
-      
-      // if (event.data == "###") {
-      //   let reviewReponse = document.getElementById("review-response")
-      //   let lines = document.createElement("p")
-      //   lines.id = "review-response-" + reviewCount
-      //   reviewReponse.appendChild(lines)
-      //   reviewCount++
-      // } else {
-      //   if (document.getElementById('review-response-' + (reviewCount -1))) {
-      //     document.getElementById('review-response-' + (reviewCount -1)).textContent += event.data;
-      //   }
-      // }
     };
   
     response2.onerror = function(event) {

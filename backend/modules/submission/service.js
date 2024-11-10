@@ -101,16 +101,7 @@ let reviewDocument = async (publisher, docId) => {
             ...[ humanMessage2 ]
         ]
 
-
-
         let result3 = await sendConversation(getReviewMessage, "stream")
-
-        // let getFormattedMessage = [
-        //     ["system", "Please convert given text into valid html ordered list, do not use text box, do not use <ol>, use <li> directly for each list"],
-        //     ["user", result3.content]
-        // ]
-
-        // let result4 = await sendConversation(getFormattedMessage, "stream")
 
         return [ null, result3 ]
 
