@@ -5,8 +5,8 @@ const { AWS_BEDROCK_MODEL_CONVERSE, AWS_REGION_CONVERSE, AWS_SECRET_KEY, AWS_ACC
 const converse = new ChatBedrockConverse({
     region: AWS_REGION_CONVERSE,
     model: AWS_BEDROCK_MODEL_CONVERSE,
-    temperature: 0.4,
-    topP: 0.85,
+    temperature: 0.2,
+    topP: 0.4,
     // maxTokens: (process.env.NODE_ENV !== "production") ? 512 : undefined,
     maxRetries: 2,
     credentials: {
