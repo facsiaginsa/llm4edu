@@ -98,10 +98,9 @@ let reviewDocument = async (publisher, docId) => {
                 "simply ignore it and move on to the next. Please use the following HTML format for each of your solutions:" +
                 "\n\n" +
                 "<li class='review-response'>" +
-                "<p><strong>{Solution title}</strong></p>\n" +
-                "<p>{Describe the issue, specify the words, sentences, paragraphs, tables, " +
-                "or images that require attention, along with the page number if needed}</p>\n" +
-                "<p><strong>Recommendation:</strong> {Provide corrections, guidance, and example on how to fix the issue based on your expertise, do not use code block element}</p>" +
+                "<p><strong>Issue {issue number}</strong></p>\n" +
+                "<p>{Describe the issue, relevan to the requirement}</p>\n" +
+                "<p><strong>Recommendation:</strong> {Provide corrections, guidance, and example on how to fix the issue based on your expertise, do not use any html element}</p>" +
                 "</li>"
             ],
             ...[ humanMessage2 ]
