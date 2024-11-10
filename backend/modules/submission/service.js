@@ -1,4 +1,4 @@
-const { uploadDoc, getDoc, sendConversation } = require("./model")
+const { uploadDoc, getDoc, sendConversation, deleteDoc } = require("./model")
 const { HumanMessage } = require('@langchain/core/messages');
 const crypto = require("crypto");
 
@@ -108,6 +108,8 @@ let reviewDocument = async (publisher, docId) => {
         ]
 
         let result3 = await sendConversation(getReviewMessage, "stream")
+
+        deleteDoc(docId)
 
         return [ null, result3 ]
 

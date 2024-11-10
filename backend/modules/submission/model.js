@@ -34,7 +34,6 @@ let getDoc = async (docId) => {
     })
 }
 
-
 let uploadDoc = async(docId, docStream, docMetadata) => {
 
     return new Promise((resolve, reject) => {
@@ -60,8 +59,27 @@ let uploadDoc = async(docId, docStream, docMetadata) => {
     })
 }
 
+let deleteDoc = async(docId) => {
+    let filesCollection = db.collection("submission_draft.files")
+    let chunkCollection = db.collection("submission_draft.chunks")
+    let document = await filesCollection.findOne({
+        filename: docId
+    })
+
+    await filesCollection.deleteOne({
+        filename: docId
+    })
+
+    await chunkCollection.deleteMany({
+        files_id: document._id
+    })
+
+    return { message: "file deleted" }
+}
+
 module.exports = {
     sendConversation,
     uploadDoc,
-    getDoc
+    getDoc,
+    deleteDoc
 }
