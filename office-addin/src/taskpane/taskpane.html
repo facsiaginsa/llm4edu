@@ -10,14 +10,18 @@
     <div class="tabs">
         <button id="brainstorm-button" class="tabs-button active">Brainstorm</button>
         <button id="rephrase-button" class="tabs-button">Rephrase</button>
-        <button id="summarize-button" class="tabs-button">Summarize</button>
         <button id="review-button" class="tabs-button">Review</button>
     </div>
 
     <hr/>
     <div id="brainstorm" class="tab active">
-        <h3>Brainstorm</h3>
-        <p>Brainstorm an Idea of what to write for you.</p>
+        <p class="help-text">
+            This feature helps you brainstorm ideas for writing a compelling paper topic.
+        </p>
+        <p class="help-text">
+            To use this feature, simply specify the research area you're interested in, 
+            and we will provide you with insightful suggestions related to that field.
+        </p>
         <hr/>
         <textarea id="brainstorm-input"></textarea>
         <button onclick="submitBrainstorm()">Submit</button>
@@ -36,13 +40,6 @@
         </p>
         <hr/>
         <div id="rephrase-container"></div>
-    </div>
-
-    <div id="summarize" class="tab">
-        <h3>Summarize</h3>
-        <p>Summarize the content of selected images.</p>
-        <hr/>
-        <div id="summarize-container"></div>
     </div>
 
     <div id="review" class="tab">

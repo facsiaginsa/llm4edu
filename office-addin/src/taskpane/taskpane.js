@@ -44,7 +44,6 @@ function showTab(tab) {
 document.getElementById('brainstorm-button').onclick = () => showTab("brainstorm")
 document.getElementById('rephrase-button').onclick = () => showTab("rephrase")
 document.getElementById('review-button').onclick = () => showTab("review")
-document.getElementById('summarize-button').onclick = () => showTab("summarize")
 
 /**
  * End of Features Tab Menu
