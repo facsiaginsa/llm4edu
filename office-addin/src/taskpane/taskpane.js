@@ -195,7 +195,8 @@ async function rephraseConfirmation() {
 
 async function sendRephraseRequest(text) {
 
-  let response = new EventSource(process.env.BACKEND_URL + '/rephrase?text=' + text)
+  let encodedText = encodeURIComponent(text)
+  let response = new EventSource(process.env.BACKEND_URL + '/rephrase?text=' + encodedText)
 
   const rephraseContainer = document.getElementById('rephrase-container');
 
