@@ -277,7 +277,7 @@ function displayBrainstormSuggestions(brainstormIdea) {
       // Check if brainstormIdea is an array; if not, convert it
       let suggestions = Array.isArray(brainstormIdea)
           ? brainstormIdea
-          : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
+          : brainstormIdea.split('<br/>').filter(item => item.trim() !== ''); // Split by line and filter out empty items
 
       const suggestionElements = suggestions
           .map((suggestion, index) => `
