@@ -257,7 +257,8 @@ async function loadingRephraseAnimation() {
 
 async function submitBrainstorm() {
   const input = document.getElementById('brainstorm-input').value;
-  console.log("Input text:", input);  // Log input to check if it's capturing correctly
+  // console.log("Input text:", input);  // Log input to check if it's capturing correctly
+  loadingBrainstormAnimation()
 
   try {
     const response = await axios.post(process.env.BACKEND_URL + "/brainstorm", {
@@ -311,6 +312,15 @@ function copyToWord(cardElement) {
           });
       }
   });
+}
+
+async function loadingBrainstormAnimation() {
+  const reviewContainer = document.getElementById('brainstorm-suggestions');
+  reviewContainer.innerHTML = `
+    <div class="brainstorm-response">
+      <div class="loader"></div>
+    </div>
+  `
 }
 
 document.getElementById('brainstorm-input-button').onclick = () => submitBrainstorm()
