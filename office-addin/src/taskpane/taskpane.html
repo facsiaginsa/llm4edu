@@ -23,8 +23,13 @@
             and we will provide you with insightful suggestions related to that field.
         </p>
         <hr/>
-        <textarea id="brainstorm-input"></textarea>
-        <button onclick="submitBrainstorm()">Submit</button>
+        <div class="brainstorm-form-box">
+            <label for="brainstorm-input">What research area you're interested in?</label>
+            <input type="text" class="brainstorm-form-text" id="brainstorm-input"></input>
+            <span id="brainstorm-input-button">Brainstorm!</button>
+        </div>
+        <!-- <textarea id="brainstorm-input"></textarea>
+        <button onclick="submitBrainstorm()">Submit</button> -->
         <!-- Card container for brainstorm suggestions -->
         <div id="brainstorm-suggestions" class="card-container" ></div>
     </div>

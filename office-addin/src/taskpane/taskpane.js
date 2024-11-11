@@ -313,11 +313,10 @@ function copyToWord(cardElement) {
   });
 }
 
+document.getElementById('brainstorm-input-button').onclick = () => submitBrainstorm()
 
-
-
-window.submitBrainstorm = submitBrainstorm;
-document.getElementById('brainstorm-button').addEventListener('click', submitBrainstorm);
+// window.submitBrainstorm = submitBrainstorm;
+// document.getElementById('brainstorm-button').addEventListener('click', submitBrainstorm);
 
 
 /**

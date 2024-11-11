@@ -48,6 +48,10 @@ body {
     padding: 10px;
 }
 
+.rephase-confirmation-box:hover { 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .rephrase-response-box {
     border-color: #FFFFFF;
     border-radius: 5px;
@@ -55,6 +59,10 @@ body {
     border-style: solid;
     background-color: #FFFFFF;
     padding: 10px;
+}
+
+.rephrase-response-box:hover { 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .rephase-confirmation-box span{
@@ -104,6 +112,10 @@ body {
     padding: 10px;
 }
 
+.review-form-box:hover { 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .review-form-text {
     border: none;
     border-bottom: 1px solid #2fa8ff;
@@ -114,22 +126,22 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-textarea {
+/* textarea {
     margin-top: 10px;
     margin-bottom: 10px;
     width: 90%;
     height: 50px;
     padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
-}
-
+} */
+/* 
 textarea:focus {
     border-color:#2fa8ff;
     border-style: solid;
     border-width: 1.5px;
     outline: none;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
+} */
 
 .review-form-box span{
     color: #2fa8ff;
@@ -157,6 +169,36 @@ textarea:focus {
     padding-left: 0px;
 }
 
+.brainstorm-form-box {
+    border-color: #FFFFFF;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+
+.brainstorm-form-box:hover { 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.brainstorm-form-box span{
+    color: #2fa8ff;
+    font-weight: bold;
+    font-size: smaller;
+    cursor: pointer;
+}
+
+.brainstorm-form-text {
+    border: none;
+    border-bottom: 1px solid #2fa8ff;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 90%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -177,7 +219,6 @@ textarea:focus {
     transform: scale(1.05);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 .card h4 {
     font-size: 16px;
