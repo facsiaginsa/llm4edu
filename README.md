@@ -9,17 +9,13 @@ Academic Writing Assistance
 
 ## How to start the backend
 
-```bash
-cd backend
-npm install
-node index.js
-```
+Backend is already running in our VM. just run the office add-in with given env
 
 ## How to start the office-addin
 
 Install all dependencies
 ```bash
-cd llm4edu
+cd office-addin
 npm install
 ```
 
@@ -27,12 +23,11 @@ Create  `.env` file from `.env.example`
 ```bash
 cp .env.example .env
 ```
-And then fill the env according to your situation
 
 Run the addin
 ```bash
 npm run dev-server 
-# Exit after webpack compiled successfully
+# Wait until webpack compiled successfully, and then exit
 npm start
 ```
 The word application will opened automatically
