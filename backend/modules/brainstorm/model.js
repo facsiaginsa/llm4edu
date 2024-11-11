@@ -33,17 +33,40 @@ let sendBrainstorm = async (conversation) => {
             ["human", "{input}"],
         ]);
         */
+       /*
         const prompt = PromptTemplate.fromTemplate(`You are a helpful assistant.
 
             Here is the context of the question:
 
             {context}
-            
-            Now, answer (to the point - without numbering and quotation mark) 5 title for the following question:
+
+            Now, answer (to the point - without numbering and quotation mark) 5 title and its abstract (in three lines) for the following question:
             
             {content}
             
             `);
+        */
+        const prompt = PromptTemplate.fromTemplate(`You are a creative brainstorming assistant who only make an insightful title.
+
+            
+            Here is the idea of the question:
+
+            {context}
+
+            Use the provided information as a suggestion rather than a strict constraint:
+            - If the context is relevant, create titles that reflect its essence.
+            - Aim to stay concise, insightful, and without redundancies.
+            - if out of topic, answer {{none}}
+            - Without numbering and quotation mark
+            - 5 titles and its abstract (in 3 lines)
+            - format: '1. Title:{{title}}. Abstract:{{abstract}},  
+            2. Title:{{title}}. Abstract:{{abstract}},   
+            3. Title:{{title}}. Abstract:{{abstract}},  
+            4. Title:{{title}}. Abstract:{{abstract}},  
+            5. Title:{{title}}. Abstract:{{abstract}}.  
+
+            {content}`
+        )
 
 
         // Collection Vector
@@ -58,7 +81,7 @@ let sendBrainstorm = async (conversation) => {
         //console.log("basic output: ", basicOutput)
         
         // Chain
-        const llm = converse(0.2, 0.4)
+        const llm = converse(0.9, 0.1)
         const chain = prompt.pipe(llm);
         const response = await chain.invoke({ content: conversation, context: basicOutput});
         typeof("di model: ", typeof(response))
