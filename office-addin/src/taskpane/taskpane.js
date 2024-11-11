@@ -260,7 +260,7 @@ async function submitBrainstorm() {
   console.log("Input text:", input);  // Log input to check if it's capturing correctly
 
   try {
-    const response = await axios.post(`http://localhost:3001/brainstorm`, {
+    const response = await axios.post(process.env.BACKEND_URL + "/brainstorm", {
       prompt: input,
     });
     console.log("API Response:", response);  // Log entire response
