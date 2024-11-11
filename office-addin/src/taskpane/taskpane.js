@@ -206,7 +206,7 @@ async function sendRephraseRequest(text) {
       rephraseContainer.innerHTML = `
         <div id="rephrase-response" class="rephrase-response-box">
           <p id="rephrase-response-text"></p>
-          <span onClick="copyToClipboard()" id="rephrase-response-copy">Copy Text!</span>
+          <span onClick="copyTextToClipboard()" id="rephrase-response-copy">Copy Text!</span>
         </div>`;
       eventStart++
     }
@@ -225,16 +225,16 @@ async function sendRephraseRequest(text) {
   };
 }
 
-async function copyToClipboard() {
+async function copyTextToClipboard() {
   let text = document.getElementById('rephrase-response-text').textContent;
 
   navigator.clipboard.writeText(text).then(() => {
-    document.getElementById('rephrase-response-copy').textContent = "Text Copied!"
+    document.getElementById('rephrase-response-copy').textContent = "Text copied to clipboard!"
   })
 
   setTimeout(() => { 
     document.getElementById('rephrase-response-copy').textContent = "Copy Text!"; 
-  }, 2000);
+  }, 4000);
 }
 
 async function loadingRephraseAnimation() {
@@ -257,7 +257,6 @@ async function loadingRephraseAnimation() {
 
 async function submitBrainstorm() {
   const input = document.getElementById('brainstorm-input').value;
-  // console.log("Input text:", input);  // Log input to check if it's capturing correctly
   loadingBrainstormAnimation()
 
   try {
@@ -281,9 +280,10 @@ function displayBrainstormSuggestions(brainstormIdea) {
           : brainstormIdea.split('\n').filter(item => item.trim() !== ''); // Split by line and filter out empty items
 
       const suggestionElements = suggestions
-          .map(suggestion => `
-              <div class="card" onclick="copyToWord(this)">
-                  <p>${suggestion}</p>
+          .map((suggestion, index) => `
+              <div class="brainstorm-response">
+                  <p id="brainstorm-response-text-${index}">${suggestion}</p>
+                  <span id="brainstorm-response-copy-${index}" onClick="copyIdeaToClipboard(${index})">Copy this idea!</span>
               </div>
           `)
           .join('');
@@ -298,21 +298,34 @@ function displayBrainstormSuggestions(brainstormIdea) {
       console.error('Error fetching brainstorm suggestions:', error);
   }
 }
-function copyToWord(cardElement) {
-  const content = cardElement.innerText; // Ambil teks dari kartu yang diklik
-  
-  Office.onReady((info) => {
-      if (info.host === Office.HostType.Word) {
-          Word.run(async (context) => {
-              const body = context.document.body;
-              body.insertText(content, Word.InsertLocation.end); // Masukkan teks ke Word di bagian akhir
-              await context.sync();
-          }).catch((error) => {
-              console.error("Error inserting text into Word:", error);
-          });
-      }
-  });
+
+async function copyIdeaToClipboard(index) {
+  let text = document.getElementById("brainstorm-response-text-" + index).textContent;
+
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('brainstorm-response-copy-' + index).textContent = "Text copied to clipboard!"
+  })
+
+  setTimeout(() => { 
+    document.getElementById('brainstorm-response-copy-' + index).textContent = "Copy Text!"; 
+  }, 4000);
 }
+
+// function copyToWord(cardElement) {
+//   const content = cardElement.innerText; // Ambil teks dari kartu yang diklik
+  
+//   Office.onReady((info) => {
+//       if (info.host === Office.HostType.Word) {
+//           Word.run(async (context) => {
+//               const body = context.document.body;
+//               body.insertText(content, Word.InsertLocation.end); // Masukkan teks ke Word di bagian akhir
+//               await context.sync();
+//           }).catch((error) => {
+//               console.error("Error inserting text into Word:", error);
+//           });
+//       }
+//   });
+// }
 
 async function loadingBrainstormAnimation() {
   const reviewContainer = document.getElementById('brainstorm-suggestions');

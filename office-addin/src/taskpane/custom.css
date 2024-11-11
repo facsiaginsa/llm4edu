@@ -210,6 +210,17 @@ textarea:focus {
     padding: 10px;
 }
 
+.brainstorm-response:hover { 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.brainstorm-response span{
+    color: #2fa8ff;
+    font-weight: bold;
+    font-size: smaller;
+    cursor: pointer;
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -217,7 +228,7 @@ textarea:focus {
     margin-top: 20px;
 }
 
-.card {
+/* .card {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
@@ -229,7 +240,7 @@ textarea:focus {
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .card h4 {
     font-size: 16px;
