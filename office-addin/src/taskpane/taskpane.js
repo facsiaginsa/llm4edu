@@ -263,9 +263,7 @@ async function submitBrainstorm() {
     const response = await axios.post(process.env.BACKEND_URL + "/brainstorm", {
       prompt: input,
     });
-    console.log("API Response:", response);  // Log entire response
 
-    console.log("API suggestions:", response.data);
     displayBrainstormSuggestions(response.data);  // Call the display function
   } catch (error) {
     console.error("Error fetching brainstorm suggestions:", error);
@@ -277,12 +275,12 @@ function displayBrainstormSuggestions(brainstormIdea) {
       // Check if brainstormIdea is an array; if not, convert it
       let suggestions = Array.isArray(brainstormIdea)
           ? brainstormIdea
-          : brainstormIdea.split('<br/>').filter(item => item.trim() !== ''); // Split by line and filter out empty items
+          : brainstormIdea.split('<br/>').filter(item => item.trim() !== '');
 
       const suggestionElements = suggestions
           .map((suggestion, index) => `
-              <div class="brainstorm-response">
-                  <p id="brainstorm-response-text-${index}">${suggestion}</p>
+              <div id="brainstorm-response-${index}" class="brainstorm-response">
+                  ${suggestion}
                   <span id="brainstorm-response-copy-${index}" onClick="copyIdeaToClipboard(${index})">Copy this idea!</span>
               </div>
           `)
@@ -300,9 +298,14 @@ function displayBrainstormSuggestions(brainstormIdea) {
 }
 
 async function copyIdeaToClipboard(index) {
-  let text = document.getElementById("brainstorm-response-text-" + index).textContent;
+  let responseDiv = document.getElementById("brainstorm-response-" + index)
+  let paragraphs = responseDiv.getElementsByTagName("p");
 
-  navigator.clipboard.writeText(text).then(() => {
+  let copyText = paragraphs[0].innerText + "\n\n" + paragraphs[1].innerText + "\n" + paragraphs[2].innerText
+
+  // let text = document.getElementById("brainstorm-response-text-" + index).textContent;
+
+  navigator.clipboard.writeText(copyText).then(() => {
     document.getElementById('brainstorm-response-copy-' + index).textContent = "Text copied to clipboard!"
   })
 
