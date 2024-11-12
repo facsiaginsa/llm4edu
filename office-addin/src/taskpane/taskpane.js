@@ -264,7 +264,7 @@ async function submitBrainstorm() {
       prompt: input,
     });
 
-    displayBrainstormSuggestions(response.data);  // Call the display function
+    displayBrainstormSuggestions(response.data); 
   } catch (error) {
     console.error("Error fetching brainstorm suggestions:", error);
   }
@@ -272,7 +272,6 @@ async function submitBrainstorm() {
 
 function displayBrainstormSuggestions(brainstormIdea) {
   try {
-      // Check if brainstormIdea is an array; if not, convert it
       let suggestions = Array.isArray(brainstormIdea)
           ? brainstormIdea
           : brainstormIdea.split('<br/>').filter(item => item.trim() !== '');
@@ -303,8 +302,6 @@ async function copyIdeaToClipboard(index) {
 
   let copyText = paragraphs[0].innerText + "\n\n" + paragraphs[1].innerText + "\n" + paragraphs[2].innerText
 
-  // let text = document.getElementById("brainstorm-response-text-" + index).textContent;
-
   navigator.clipboard.writeText(copyText).then(() => {
     document.getElementById('brainstorm-response-copy-' + index).textContent = "Text copied to clipboard!"
   })
@@ -313,22 +310,6 @@ async function copyIdeaToClipboard(index) {
     document.getElementById('brainstorm-response-copy-' + index).textContent = "Copy Text!"; 
   }, 4000);
 }
-
-// function copyToWord(cardElement) {
-//   const content = cardElement.innerText; // Ambil teks dari kartu yang diklik
-  
-//   Office.onReady((info) => {
-//       if (info.host === Office.HostType.Word) {
-//           Word.run(async (context) => {
-//               const body = context.document.body;
-//               body.insertText(content, Word.InsertLocation.end); // Masukkan teks ke Word di bagian akhir
-//               await context.sync();
-//           }).catch((error) => {
-//               console.error("Error inserting text into Word:", error);
-//           });
-//       }
-//   });
-// }
 
 async function loadingBrainstormAnimation() {
   const reviewContainer = document.getElementById('brainstorm-suggestions');
@@ -341,47 +322,6 @@ async function loadingBrainstormAnimation() {
 
 document.getElementById('brainstorm-input-button').onclick = () => submitBrainstorm()
 
-// window.submitBrainstorm = submitBrainstorm;
-// document.getElementById('brainstorm-button').addEventListener('click', submitBrainstorm);
-
-
 /**
  * End of Brainstorm Feature
  */
-
-
-// export async function getSuggestions() {
-//   const text = document.getElementById('academicText').value;
-//   const response = await fetch(process.env.BACKEND_URL + '/analyze', {
-//       method: 'POST',
-//       headers: {
-//           'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ text }),
-//   });
-//   const data = await response.json();
-//   document.getElementById('suggestions').innerHTML = data.suggestions;
-// }
-
-// export async function scanDocument() {
-//   return Word.run(async (context) => {
-//     // Get the entire document's content
-//     const body = context.document.body.paragraphs;
-//     body.load('text');
-
-//     await context.sync()
-//     // const text = body.text;
-//     body.items.forEach((item) => {
-//       console.log(item.text)
-//     })
-
-//   });
-// }
-
-// export async function popUp() {
-//   return Word.run(async (context) => {
-//     Office.context.ui.displayDialogAsync( process.env.ADDIN_URL + '/hello.html', { width: 30, height: 30 }, function (asyncResult) {
-//       const dialog = asyncResult.value;
-//     });
-//   })
-// }

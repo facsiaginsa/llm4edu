@@ -17,42 +17,9 @@ let searchDocumentVector = async (query) =>{
 
 let sendBrainstorm = async (conversation) => {
 
-        /*
-        const systemPrompt =
-            "You are an assistant for question-answering tasks. " +
-            "Use the following pieces of retrieved context to answer " +
-            "the question. If you don't know the answer, say that you " +
-            "don't know. Use three sentences maximum and keep the " +
-            "answer concise." +
-            "\n\n" +
-            "{context}";
-
-           
-        const prompt = ChatPromptTemplate.fromMessages([
-            ["system", systemPrompt],
-            ["human", "{input}"],
-        ]);
-        */
-       /*
-        const prompt = PromptTemplate.fromTemplate(`You are a helpful assistant.
-
-            Here is the context of the question:
-
-            {context}
-
-            Now, answer (to the point - without numbering and quotation mark) 5 title and its abstract (in three lines) for the following question:
-            
-            {content}
-            
-            `);
-        */
-
         // Collection Vector
         const vectorStore = await collectionWithVector(collection);
-        //conversation = JSON.stringify(conversation)
         let iniEmbeddings = await embedding.embedQuery(conversation)
-        // iniEmbeddings = JSON.stringify(iniEmbeddings)
-        // iniEmbeddings = JSON.parse(iniEmbeddings);
 
         let basicOutput = await vectorStore.similaritySearchVectorWithScore(iniEmbeddings, 4);
             
@@ -120,10 +87,6 @@ let sendBrainstorm = async (conversation) => {
         
     return response
 }
-
-/**
- * Create other models here
- */
 
 module.exports = {
     insertDocumentVector,

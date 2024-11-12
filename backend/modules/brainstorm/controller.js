@@ -14,27 +14,6 @@ module.exports = function (app, opts, done) {
         
         try {
             let [ err, result ] = await createBrainstorm(prompt)
-            //console.log(result)
-
-            
-            //reply.raw.setHeader('Access-Control-Allow-Origin', '*');
-            //reply.raw.setHeader('Access-Control-Allow-Methods', 'GET');
-            //reply.raw.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-            //reply.raw.setHeader('Content-Type', 'text/event-stream');
-            //reply.raw.setHeader('Cache-Control', 'no-cache');
-            //reply.raw.setHeader('Connection', 'keep-alive');
-            /*
-            for await (const item of result) {
-                if (!item.response_metadata?.messageStop?.stopReason) {
-                    process.stdout.write(item.content);
-                    reply.raw.write(`data: ${item.content}\n\n`)
-                } else {
-                    return reply.raw.end()
-                }
-            } 
-            */
-            //console.log(result.raw.end())
-
             
             reply.code(201).send(result);
 
