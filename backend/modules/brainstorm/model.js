@@ -73,7 +73,7 @@ let sendBrainstorm = async (conversation) => {
     
                 idea:
     
-                Please follow this html template for your ideas:
+                "Please follow this HTML template for your ideas. Do not use code blocks; include only the HTML portion directly:
                 <p><strong>[The title of research]</strong></p>
                 <p><strong>Abstract:</strong> [The abstract of the research]</p>
                 <p><strong>Keywords:</strong> [The keywords of the idea]</p>
