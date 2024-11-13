@@ -6,7 +6,6 @@ let createBrainstormTrainData = async (documents) => {
     try {
 
         let texts = []
-        // document need to be formatted 
         let newDocuments = []
         for await ( document of documents ) {
             let content = `title: ${document.title}\nabstract: ${document.abstract}\nkeyword: ${document.keyword}`
@@ -33,13 +32,6 @@ let createBrainstormTrainData = async (documents) => {
 const { sendBrainstorm } = require("./model")
 let createBrainstorm = async (text) => {
     try {
-         /*
-        let formattedMessage = [
-            //["system", "You are a creative brainstorming assistant who only make an insightful title. Do not answer if the user ask out of topic. Give only five topics using this json format {\"topic1\":\"...\", ...,  \"topic5\":\"...\" }"],
-            ["input", text]
-        ]
-            */
-
         let results = await sendBrainstorm(text)
         console.log(results.content)
 

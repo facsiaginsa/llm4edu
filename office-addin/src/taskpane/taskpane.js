@@ -272,8 +272,6 @@ async function submitBrainstorm() {
 
 function displayBrainstormSuggestions(brainstormIdea) {
   try {
-      console.log("brainstormIdea", brainstormIdea)
-      console.log(typeof brainstormIdea)
       let regex = /```html(.*)```/gs
 
       if (brainstormIdea.match(regex)) {

@@ -3,14 +3,9 @@ const axios = require('axios');
 const { OPENAI_API_KEY } = require('../../configs');
 
 module.exports = function (app, opts, done) {
-    app.get('/', async () => {
 
-    })
-
-    // Create (POST) - Generate brainstorming ideas using ChatGPT
     app.post('/', async (request, reply) => {
         const { prompt } = request.body;
-        const promptInput = JSON.stringify(prompt);
         
         try {
             let [ err, result ] = await createBrainstorm(prompt)
