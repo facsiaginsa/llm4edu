@@ -272,6 +272,15 @@ async function submitBrainstorm() {
 
 function displayBrainstormSuggestions(brainstormIdea) {
   try {
+      console.log("brainstormIdea", brainstormIdea)
+      console.log(typeof brainstormIdea)
+      let regex = /```html(.*)```/gs
+
+      if (brainstormIdea.match(regex)) {
+        let array = [...brainstormIdea.matchAll(regex)]
+        brainstormIdea = array[0][1]
+      }
+
       let suggestions = Array.isArray(brainstormIdea)
           ? brainstormIdea
           : brainstormIdea.split('<br/>').filter(item => item.trim() !== '');
