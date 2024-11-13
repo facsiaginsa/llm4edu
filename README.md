@@ -11,7 +11,7 @@ Academic Writing Assistance
 
 Backend is already running in our VM. just run the office add-in with given env
 
-## How to start the office-addin
+## How to start the office add-in
 
 Install all dependencies
 ```bash
@@ -27,7 +27,7 @@ cp .env.example .env
 Run the addin
 ```bash
 npm run dev-server 
-# Wait until webpack compiled successfully, and then exit
+# Wait until webpack compiled successfully, and then exit (ctrl + C), and then start
 npm start
 ```
-The word application will opened automatically
+The word application will opened automatically and you can use the academic writing assistant!
